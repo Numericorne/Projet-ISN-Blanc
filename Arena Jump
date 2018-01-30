@@ -1,0 +1,93 @@
+# Version Optimisée
+
+from random import randrange 
+from tkinter import * 
+
+def Animation():
+    global x,y,wx,wy,gravity
+    x,y=x+wx,y+wy
+    if x>width-40:
+        x,wx,wy=width-40,0,3
+        gravity = 2
+    if y>height-40:
+        y,wx,wy=height-40,-3,0
+        gravity = 3
+    if x<10:
+        x,wx,wy=10,0,-3
+        gravity = 4
+    if y<10:
+        y,wx,wy=10,3,0
+        gravity = 1
+    can.coords(actor,x,y,x+30,y+30)
+    if flag>0:
+        fen.after(24,Animation)
+        
+def Jump():
+    global x,y,hx,hy    
+    y,x = y+hy,x+hx
+    if gravity == 1 :
+        if y > 50:
+            hy = -8
+        if y < 11:
+            return
+    if gravity == 2 :
+        if x < width - 80:
+            hx = 8
+        if x > width - 41:
+            return
+    if gravity == 3:
+        if y < height - 70:
+            hy = 8
+        if y > height - 41:
+            return
+    if gravity == 4 :
+        if x > 40:
+            hx = -8
+        if x < 11:
+            return
+    can.coords(actor,x,y,x+30,y+30)
+    fen.after(32,Jump)
+                   
+def Stop():
+    global flag
+    flag=0
+    
+def Start():
+    global flag
+    if flag==0:
+        flag=1
+        Animation()
+        
+def StartJump():
+    global hy,hx
+    if gravity == 1 :
+        hy = 8
+        hx = 5
+    if gravity == 2 :
+        hy = 5
+        hx = -8
+    if gravity == 3 :
+        hy = -8
+        hx = -5
+    if gravity == 4 :
+        hy = -5
+        hx = 8
+    Jump()
+             
+x,y,wx,wy,flag,gravity=10,10,5,0,0,1
+height,width = randrange(500,751),randrange(500,751)
+print(height,width)
+fen=Tk()
+fen.title("Animation d'une balle")
+can=Canvas(fen,bg="grey",height=height,width=width)
+can.pack()
+actor=can.create_oval(x,y,x+30,y+30,width=2,fill='red')
+bou1=Button(fen,text="quitter",command=fen.destroy)
+bou1.pack()
+bou2=Button(fen,text="demarrer",command=Start)
+bou2.pack()
+bou3=Button(fen,text="stopper",command=Stop)
+bou3.pack()
+bou4 = Button(fen,text="saut",command=StartJump)
+bou4.pack()
+fen.mainloop()
