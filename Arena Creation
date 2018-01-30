@@ -1,0 +1,42 @@
+# Prototype de la création d'une arène aux dimensions aléatoires avec animation adaptative à ces dimensions
+
+from random import randrange 
+from tkinter import * 
+
+def animer():
+    global x,y,dx,dy,flag,height,width
+    x,y=x+dx,y+dy
+    if x>width-40:
+        x,dx,dy=width-40,0,15
+    if y>height-40:
+        y,dx,dy=height-40,-15,0
+    if x<10:
+        x,dx,dy=10,0,-15
+    if y<10:
+        y,dx,dy=10,15,0
+    can1.coords(oval1,x,y,x+30,y+30)
+    if flag>0:
+        fen1.after(50,animer)
+        
+def arreter():
+    global flag
+    flag=0
+def demarrer():
+    global flag
+    if flag==0:
+        flag=1
+        animer()
+x,y,dx,dy,flag=10,10,15,0,0
+height,width = randrange(250,501),randrange(250,501)
+fen1=Tk()
+fen1.title("Animation d'une balle")
+can1=Canvas(fen1,bg="grey",height=height,width=width)
+can1.pack()
+oval1=can1.create_oval(x,y,x+30,y+30,width=2,fill='red')
+bou1=Button(fen1,text="quitter",command=fen1.destroy)
+bou1.pack()
+bou2=Button(fen1,text="demarrer",command=demarrer)
+bou2.pack()
+bou3=Button(fen1,text="stopper",command=arreter)
+bou3.pack()
+fen1.mainloop()
