@@ -1,7 +1,5 @@
 # Projet-ISN-Blanc
 
 # Recréation du jeu INFINIROOM
-
-# Lucas / Aymeric / Ange
-
-# Etat du jeu dans sa version actuelle
+# Aymeric / Lucas / Ange
+# Versions de développement du jeu / Prototypes de mécaniques
