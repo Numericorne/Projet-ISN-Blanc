@@ -1,20 +1,10 @@
-import tkinter
-
 def Timer():
-    global temps
-    temps+= 0.01
+    global temps,minutes
     if flag > 0 :
-        fen.after(10,Timer)
-        print((int((temps*100)))/100)
-
-def Flag():
-    global flag
-    if flag == 0:
-        flag = 1
-        Timer()
-        
-temps, flag = 0,0
-fen = Tk()
-Bou = Button(text="Timer",command=Flag)
-Bou.pack()
-fen.mainloop()
+        temps+= 0.01
+        if temps % 60 == 0:
+            print("yo")
+            minutes+=1
+            temps = 0
+        fen.after(1,Timer)
+        TimerPrint.configure(text=(int((temps*100)))/100)
