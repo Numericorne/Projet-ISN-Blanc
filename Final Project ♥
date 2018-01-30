@@ -58,6 +58,7 @@ def Start(): # Fonction servant à Lancer toutes les animations, simule le lance
         flag=1
         Animation()
         Obstacles()
+        Timer()
         
 def StartJump(): # Fonction servant à initier le saut afin d'éviter que celui-ci ne soit infini et non adapté aux gravités
     global hy,hx
@@ -75,8 +76,19 @@ def StartJump(): # Fonction servant à initier le saut afin d'éviter que celui-
             hy = -5
             hx = 8
         Jump()
+        
+def Timer():
+    global temps,minutes
+    if flag > 0 :
+        temps+= 0.01
+        if temps % 60 == 0:
+            print("yo")
+            minutes+=1
+            temps = 0
+        fen.after(1,Timer)
+        TimerPrint.configure(text=(int((temps*100)))/100)
     
-def Obstacles(): # Fonction servant à faire apparaître et disparâitre des obstacles autour de l'arène 
+def Obstacles(): # Fonction servant à faire apparaître et disparaitre des obstacles autour de l'arène 
     
     global obstacles1, obstacles2, obstacles3, obstacles4
     if gravity == 1 : # On teste sur quel plan se trouve l'acteur
@@ -124,7 +136,7 @@ def Obstacles(): # Fonction servant à faire apparaître et disparâitre des obs
     
     
              
-x,y,wx,wy,flag,gravity,obstacles1,obstacles2,obstacles3,obstacles4=10,10,5,0,0,1,list(),list(),list(),list() # On définit les variables principales d'entrée
+x,y,wx,wy,flag,gravity,obstacles1,obstacles2,obstacles3,obstacles4,temps,minutes=10,10,5,0,0,1,list(),list(),list(),list(),0,0 # On définit les variables principales d'entrée
 height,width = randrange(300,501),randrange(300,501) # On crée un plan aux dimensions aléatoires
 fen=Tk() #On crée la fenêtre Tkinter
 fen.title("Animation d'une balle")
@@ -139,4 +151,6 @@ bou3=Button(fen,text="stopper",command=Stop)
 bou3.pack()
 bou4 = Button(fen,text="saut",command=StartJump)
 bou4.pack()
+TimerPrint = Label(fen)
+TimerPrint.pack()
 fen.mainloop()
