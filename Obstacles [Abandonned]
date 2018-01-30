@@ -1,0 +1,33 @@
+def Obstacles():
+    nb = randrange(0,100) #On définit une probabilité d'apparition d'obstacle
+    if nb <= 100 : 
+        if gravity == 1 : #Si acteur en haut
+            sx = x +100 #On crée l'obstacle 100 pixels plus loin que l'acteur en fonction du plan 
+            sy = 0
+            if sx > width : #A repenser, sert à créer l'obstacle sur un autre plan 
+                sy = sx - width
+                sx = width - 20
+            obstacle = can.create_rectangle(sx,sy,sx+20,sy+20) #On créee l'obstacle aux coordonnées sx,sy
+        if gravity == 2 :
+            sx = width - 20
+            sy = y + 100
+            if sy > height :
+                sx = width + (width - sy)
+                sy = height - 20
+            obstacle = can.create_rectangle(sx,sy,sx+20,sy+20)
+        if gravity == 3 :
+            sx = x - 100
+            sy = height - 20
+            if sx < 0 :
+                sy = sx + height
+                sx = 0
+            obstacle = can.create_rectangle(sx,sy,sx+20,sy+20)
+        if gravity == 4 :
+            sx = 0
+            sy = y - 100
+            if sy < 0 :
+                sx = -sy
+                sy = 0
+            obstacle = can.create_rectangle(sx,sy,sx+20,sy+20)
+    if flag > 0:
+fen.after(10,Obstacles)
