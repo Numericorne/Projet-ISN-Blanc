@@ -1,0 +1,7 @@
+def Timer():
+    global temps
+    chaine.configure(text=temps) 
+    temps+= 0.01
+    if flag > 0 :
+        fen.after(10,Timer)
+      
