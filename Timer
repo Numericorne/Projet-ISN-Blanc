@@ -1,0 +1,7 @@
+import time
+mintt=0
+timer=mintt
+while (timer != 15 ):
+    timer=timer+1
+    time.sleep(1)
+    print(timer)
