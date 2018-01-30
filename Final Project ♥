@@ -89,7 +89,6 @@ def Obstacles(): # Fonction servant à faire apparaître et disparâitre des obs
             sx = width
             sy = randrange(round(height/2),height-16) # On crée des obstacles sur la dernière moitié du plan de droite
         obstacles2.append(can.create_rectangle(sx,sy,sx-15,sy+15,fill='red'))
-        print("obstacles2=",obstacles2)
     if gravity == 2 :
         for n in range(len(obstacles1)):
             can.delete(obstacles1[n])
@@ -100,7 +99,6 @@ def Obstacles(): # Fonction servant à faire apparaître et disparâitre des obs
             sy = height
             sx = randrange(0,round(width/2)) # On crée des obstacles sur la deuxième moitié du plan du bas
         obstacles3.append(can.create_rectangle(sx,sy,sx+15,sy-15,fill='blue'))
-        print("obstacles3=",obstacles3)
     if gravity == 3 :
         for n in range(len(obstacles2)):
             can.delete(obstacles2[n])
@@ -111,7 +109,6 @@ def Obstacles(): # Fonction servant à faire apparaître et disparâitre des obs
             sy = randrange(0,round(height/2))# On crée des obstacles sur la deuxième moitié du plan de gauche
             sx = 0
         obstacles4.append(can.create_rectangle(sx,sy,sx+15,sy-15,fill='yellow'))
-        print("obstacles4=",obstacles4)
     if gravity == 4 :
         for n in range(len(obstacles3)):
             can.delete(obstacles3[n])
@@ -122,7 +119,6 @@ def Obstacles(): # Fonction servant à faire apparaître et disparâitre des obs
             sy = 0
             sx = randrange (round(width/2),width-16) # On crée des obstacles sur la deuxième moitié du plan du haut
         obstacles1.append(can.create_rectangle(sx,sy,sx+15,sy+15,fill='orange'))
-        print("obstacles1=",obstacles1)
     if flag > 0 :
         fen.after(2000,Obstacles)
     
