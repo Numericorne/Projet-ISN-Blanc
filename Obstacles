@@ -1,0 +1,49 @@
+def Obstacles(): # Fonction servant à faire apparaître et disparaitre des obstacles autour de l'arène 
+    
+    global obstacles1, obstacles2, obstacles3, obstacles4,sx,sy
+    if gravity == 1 : # On teste sur quel plan se trouve l'acteur
+        for n in range(len(obstacles4)):
+            can.delete(obstacles4[n]) # On cherche parmis tous les obstacles "n" crées sur le plan précédent et on les supprime tous du canvas
+        if x <= round(width/2) : # Si l'acteur se trouve avant la moitié du plan du haut
+            sx = width-10
+            sy = randrange(0,height-16) # on crée des obstacles sur tout le plan de droite
+        if x > round(width/2) : # Si l'acteur se trouve après la moitié du plan du haut
+            sx = width -10
+            sy = randrange(round(height/2),height-16) # On crée des obstacles sur la dernière moitié du plan de droite
+        obstacles2.append(can.create_rectangle(sx,sy,sx-15,sy+15,fill='red')) # On ajoute l'obstacle sur le plan suivant et dans une liste contenant tous les obstacles du plan
+        obstacles4 = list() # On réinitialise la liste contenant les obstacles du plan précédent
+    if gravity == 2 :
+        for n in range(len(obstacles1)):
+            can.delete(obstacles1[n])
+        if y <= round(height/2): # Si l'acteur se trouve sur la première moitié du plan de droite
+            sy = height-10
+            sx = randrange(0,width-16) # On crée des obstacles sur tout le plan du bas
+        if y > round(height/2) :  # Si l'acteur se trouve sur la deuxième moitié du plan de droite
+            sy = height-10
+            sx = randrange(0,round(width/2)) # On crée des obstacles sur la deuxième moitié du plan du bas
+        obstacles3.append(can.create_rectangle(sx,sy,sx+15,sy-15,fill='blue'))
+        obstacles1 = list()
+    if gravity == 3 :
+        for n in range(len(obstacles2)):
+            can.delete(obstacles2[n]) 
+        if x >= round(width/2) : # Si l'acteur se trouve sur la première moitié du plan du bas
+            sy = randrange(0,height-16) # On crée des obstacles sur tout le plan de gauche
+            sx = 10
+        if x < round(width/2) : # Si l'acteur se trouve sur la deuxième moitié du plan du bas
+            sy = randrange(0,round(height/2))# On crée des obstacles sur la deuxième moitié du plan de gauche
+            sx = 10
+        obstacles4.append(can.create_rectangle(sx,sy,sx+15,sy-15,fill='yellow'))
+        obstacles2 = list()
+    if gravity == 4 :
+        for n in range(len(obstacles3)):
+            can.delete(obstacles3[n])
+        if y >= round(height/2): # Si l'acteur se trouve sur la première moitié du plan de gauche
+            sy = 10
+            sx = randrange (0,round(width-16)) # On crée des obstacles sur tout le plan du haut
+        if y < round(height/2): # Si l'acteur se trouve sur la deuxième moitié du plan de gauche
+            sy = 10
+            sx = randrange (round(width/2),width-16) # On crée des obstacles sur la deuxième moitié du plan du haut
+        obstacles1.append(can.create_rectangle(sx,sy,sx+15,sy+15,fill='orange'))
+        obstacles3 = list()
+    if flag > 0 :
+        fen.after(1500,Obstacles)
