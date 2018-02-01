@@ -1,0 +1,20 @@
+def DeathTrigger(): # Fonction servant à détecter les collisions entre l'acteur et un obstacle et de déclencher la fin du jeu
+    if gravity == 1 : # On adapte la fonction en fonction de la gravité
+        for n in range(len(obstacles1)): # On fait en sorte de sélectionner tous les obstacles "n" du plan où se trouve l'acteur
+            if can.coords(obstacles1[n])[0] <= x+30 <= can.coords(obstacles1[n])[2] and can.coords(obstacles1[n])[1] <= y <= can.coords(obstacles1[n])[3]:
+            # On teste si l'acteur se trouve "dans" la zone de l'obstacle grâce à des encadrements
+                print("death") # On déclenche la mort
+    if gravity == 2 :
+        for n in range(len(obstacles2)):
+            if can.coords(obstacles2[n])[1] <= y+30 <= can.coords(obstacles2[n])[3] and can.coords(obstacles2[n])[0] <= x+30 <= can.coords(obstacles2[n])[2] :
+                print("death")
+    if gravity == 3 :
+        for n in range(len(obstacles3)):
+            if can.coords(obstacles3[n])[0] <= x <= can.coords(obstacles3[n])[2] and can.coords(obstacles3[n])[1] <= y+30 <= can.coords(obstacles3[n])[3]:
+                print("death")
+    if gravity == 4 :
+        for n in range(len(obstacles4)): 
+            if can.coords(obstacles4[n])[1] <= y <= can.coords(obstacles4[n])[3] and can.coords(obstacles4[n])[0] <= x <= can.coords(obstacles4[n])[2]:
+                print("death")
+    if flag > 0 :
+        fen.after(10,Suicide) # On raffraichit la fonction récursive
