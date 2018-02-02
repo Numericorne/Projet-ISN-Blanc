@@ -154,7 +154,7 @@ def DeathTrigger(): # Fonction servant à détecter les collisions entre l'acteu
             if can.coords(obstacles4[n])[1] <= y <= can.coords(obstacles4[n])[3] and can.coords(obstacles4[n])[0] <= x <= can.coords(obstacles4[n])[2]:
                 print("death")
     if flag > 0 :
-        fen.after(10,Suicide) # On raffraichit la fonction récursive
+        fen.after(10,DeathTrigger) # On raffraichit la fonction récursive
     
         
     
