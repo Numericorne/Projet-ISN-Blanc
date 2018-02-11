@@ -61,7 +61,7 @@ def Start(): # Fonction servant à lancer toutes les animations, simule le lance
         Timer()
         DeathTrigger()
         
-def StartJump(): # Fonction servant à initier le saut afin d'éviter que celui-ci ne soit infini et non adapté aux gravités
+def StartJump(event = None): # Fonction servant à initier le saut afin d'éviter que celui-ci ne soit infini et non adapté aux gravités
     global hy,hx
     if flag > 0 :
         if gravity == 1 : #On initialise les variables de saut pour chaque gravité
@@ -133,7 +133,7 @@ def Obstacles(): # Fonction servant à faire apparaître et disparaitre des obst
         obstacles1.append(can.create_rectangle(sx,sy,sx+15,sy+15,fill='orange'))
         obstacles3 = list()
     if flag > 0 :
-        fen.after(1500,Obstacles)
+        fen.after(2000,Obstacles)
     
 def DeathTrigger(): # Fonction servant à détecter les collisions entre l'acteur et un obstacle et de déclencher la fin du jeu
     global death
@@ -169,10 +169,10 @@ def GameOver():
     bou5.pack() 
     GameOverTime = Label(text=(int((temps*100)))/100) # On affiche également le temps au moment de la mort du joueur
     GameOverTime.pack()   
-        
-        
     
-             
+def Exit(event=None): #Fonction appelée pour éteindre le jeu
+    fen.destroy()
+                 
 x,y,wx,wy,flag,gravity,obstacles1,obstacles2,obstacles3,obstacles4,temps,death=10,10,5,0,0,1,list(),list(),list(),list(),0,0 # On définit les variables principales d'entrée
 height,width = randrange(300,501),randrange(300,501) # On crée un plan aux dimensions aléatoires
 print("height = ",height,"width = ",width)
@@ -181,14 +181,16 @@ fen.title("Animation d'une balle")
 can=Canvas(fen,bg="grey",height=height,width=width) # On crée un canvas aux dimensions définies plus haut
 can.pack()
 actor=can.create_oval(x,y,x+30,y+30,width=2,fill='red') # On crée l'acteur, une boule de 30 pixels de diamètre
-bou1=Button(fen,text="quitter",command=fen.destroy) # Bouton pour quitter le jeu
-bou1.pack()
-bou2=Button(fen,text="demarrer",command=Start) # Bouton pour démarrer le jeu
-bou2.pack()
-bou3=Button(fen,text="stopper",command=Stop) # Bouton pour stopper le jeu
-bou3.pack()
-bou4 = Button(fen,text="saut",command=StartJump) # Bouton de saut
-bou4.pack()
+
+fen.bind("<Escape>",Exit) # On attribue la touche Échap pour quitter le jeu
+fen.bind("<space>", StartJump) # On attribue la touche espace au saut
+
+Démarrer=Button(fen,text="Démarrer",command=Start) # Bouton pour démarrer le jeu
+Démarrer.pack()
+Pause=Button(fen,text="Pause",command=Stop) # Bouton pour stopper le jeu
+Pause.pack()
+
 TimerPrint = Label(fen) # Indication textuelle sur la fenêtre du temps
 TimerPrint.pack()
+
 fen.mainloop()
