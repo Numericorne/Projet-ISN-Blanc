@@ -173,9 +173,11 @@ def GameOver():
 def Exit(event=None): #Fonction appelée pour éteindre le jeu
     fen.destroy()
                  
-x,y,wx,wy,flag,gravity,obstacles1,obstacles2,obstacles3,obstacles4,temps,death=10,10,5,0,0,1,list(),list(),list(),list(),0,0 # On définit les variables principales d'entrée
+x,y,wx,wy,flag,gravity,temps,death=10,10,5,0,0,1,0,0 # On définit les variables principales d'entrée
+obstacles1,obstacles2,obstacles3,obstacles4 =list(),list(),list(),list()
 height,width = randrange(300,501),randrange(300,501) # On crée un plan aux dimensions aléatoires
 print("height = ",height,"width = ",width)
+
 fen=Tk() #On crée la fenêtre Tkinter
 fen.title("Animation d'une balle")
 can=Canvas(fen,bg="grey",height=height,width=width) # On crée un canvas aux dimensions définies plus haut
