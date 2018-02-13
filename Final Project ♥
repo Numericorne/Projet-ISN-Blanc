@@ -2,58 +2,78 @@
 
 from random import randrange 
 from tkinter import * 
+from PIL import ImageTk, Image
 
 def Animation(): # Fonction servant à animer l'acteur autour d'un plan rectangulaire
+    
     global x,y,wx,wy,gravity
+    
     x,y=x+wx,y+wy # La position x et y de l'acteur est modifié par addition aux variables de déplacement wx et wy
+    
     if x>width-40: # Si la position x de l'acteur sort de la dimension x du plan, l'acteur change de plan
         x,wx,wy=width-40,0,3 # Ainsi, son déplacement x est nul et son déplacement y est de 3 (plan vertical de droite)
         gravity = 2 # On définit ensuite le plan vertical de droite comme étant la gravité 2
+        
     if y>height-40:
         y,wx,wy=height-40,-3,0
         gravity = 3 # On définit le plan horizontal du bas comme étant la gravité 3
+        
     if x<10:
         x,wx,wy=10,0,-3
         gravity = 4 # On définit le plan vertical de gauche comme étant la gravité 4
+        
     if y<10:
         y,wx,wy=10,3,0
         gravity = 1 # On définit le plan horizontal du haut comme étant la gravité 1, celle de départ
+        
     can.coords(actor,x,y,x+30,y+30) # On raffraichit les coordonnées de l'acteur à chaque itération
+    
     if flag>0:
         fen.after(24,Animation) # Fonction récursive permettant d'actualiser en permanance l'animation
         
 def Jump(): # Fonction servant à faire sauter l'acteur, dépend de la fonction StartJump
+    
     global x,y,hx,hy 
+    
     y,x = y+hy,x+hx # La position x et y de l'acteur est modifiée par addition aux variables de saut hx et hy
+    
     if gravity == 1 : # Sur le plan du haut, l'acteur doit sauter vers le bas et vers la droite
         if y > 50: # Si cette condition est vérifiée, la variable de saut verticale s'annule pour faire redescendre l'acteur
             hy = -8
         if y < 11:  # Si cette condition est vérifiée, l'acteur a touché le sol et le saut est fini, on sort de la fonction
             return
+        
     if gravity == 2 : # Sur le plan de droite, l'acteur doit sauter vers la gauche et vers le bas
         if x < width - 80:
             hx = 8
         if x > width - 41:
             return
+        
     if gravity == 3: # Sur le plan du bas, l'acteur doit sauter vers le haut et vers la gauche
         if y < height - 70:
             hy = 8
         if y > height - 41:
             return
+        
     if gravity == 4 : # Sur le plan de gauche, l'acteur doit sauter vers la droite et vers le haut
         if x > 40:
             hx = -8
         if x < 11:
             return
+        
     can.coords(actor,x,y,x+30,y+30) # On raffraichit les coordonnées de l'acteur à chaque itération
     fen.after(32,Jump) # Fonction récursive permettant d'actualiser en permanance l'animation
                    
 def Stop(): # Fonction servant à arrêter l'animation globale, simule une pause du jeu
+    
     global flag
+    
     flag=0 # Cette varaible est appelée dans de nombreuses fonctions récursives comme condition de sortie
     
 def Start(): # Fonction servant à lancer toutes les animations, simule le lancement du jeu
+    
     global flag
+    
     if flag==0:
         flag=1
         Animation()
@@ -62,7 +82,9 @@ def Start(): # Fonction servant à lancer toutes les animations, simule le lance
         DeathTrigger()
         
 def StartJump(event = None): # Fonction servant à initier le saut afin d'éviter que celui-ci ne soit infini et non adapté aux gravités
+    
     global hy,hx
+    
     if flag > 0 :
         if gravity == 1 : #On initialise les variables de saut pour chaque gravité
             hy = 8
@@ -79,7 +101,9 @@ def StartJump(event = None): # Fonction servant à initier le saut afin d'évite
         Jump()
         
 def Timer(): # Fonction servant à lancer un Timer pour compter, en secondes, la durée de survie du joueur
+    
     global temps
+    
     if flag > 0 : 
         temps+= 0.01 # Correspond à une augmentation de 0.01 secondes
         fen.after(3,Timer) # Défini le taux de raffraichissement de la fonction, adapté pour correspondre à 1 secondes
@@ -88,6 +112,7 @@ def Timer(): # Fonction servant à lancer un Timer pour compter, en secondes, la
 def Obstacles(): # Fonction servant à faire apparaître et disparaitre des obstacles autour de l'arène 
     
     global obstacles1, obstacles2, obstacles3, obstacles4,sx,sy
+    
     if gravity == 1 : # On teste sur quel plan se trouve l'acteur
         for n in range(len(obstacles4)):
             can.delete(obstacles4[n]) # On cherche parmis tous les obstacles "n" crées sur le plan précédent et on les supprime tous du canvas
@@ -99,6 +124,7 @@ def Obstacles(): # Fonction servant à faire apparaître et disparaitre des obst
             sy = randrange(round(height/2),height-16) # On crée des obstacles sur la dernière moitié du plan de droite
         obstacles2.append(can.create_rectangle(sx,sy,sx-15,sy+15,fill='red')) # On ajoute l'obstacle sur le plan suivant et dans une liste contenant tous les obstacles du plan
         obstacles4 = list() # On réinitialise la liste contenant les obstacles du plan précédent
+        
     if gravity == 2 :
         for n in range(len(obstacles1)):
             can.delete(obstacles1[n])
@@ -110,6 +136,7 @@ def Obstacles(): # Fonction servant à faire apparaître et disparaitre des obst
             sx = randrange(0,round(width/2)) # On crée des obstacles sur la deuxième moitié du plan du bas
         obstacles3.append(can.create_rectangle(sx,sy,sx+15,sy-15,fill='blue'))
         obstacles1 = list()
+        
     if gravity == 3 :
         for n in range(len(obstacles2)):
             can.delete(obstacles2[n]) 
@@ -121,6 +148,7 @@ def Obstacles(): # Fonction servant à faire apparaître et disparaitre des obst
             sx = 10
         obstacles4.append(can.create_rectangle(sx,sy,sx+15,sy-15,fill='yellow'))
         obstacles2 = list()
+        
     if gravity == 4 :
         for n in range(len(obstacles3)):
             can.delete(obstacles3[n])
@@ -132,6 +160,7 @@ def Obstacles(): # Fonction servant à faire apparaître et disparaitre des obst
             sx = randrange (round(width/2),width-16) # On crée des obstacles sur la deuxième moitié du plan du haut
         obstacles1.append(can.create_rectangle(sx,sy,sx+15,sy+15,fill='orange'))
         obstacles3 = list()
+        
     if flag > 0 :
         fen.after(2000,Obstacles)
     
@@ -142,33 +171,48 @@ def DeathTrigger(): # Fonction servant à détecter les collisions entre l'acteu
             if can.coords(obstacles1[n])[0] <= x+30 <= can.coords(obstacles1[n])[2] and can.coords(obstacles1[n])[1] <= y <= can.coords(obstacles1[n])[3]:
             # On teste si l'acteur se trouve "dans" la zone de l'obstacle grâce à des encadrements
                 death = 1 # On déclenche la mort
+                
     if gravity == 2 :
         for n in range(len(obstacles2)):
             if can.coords(obstacles2[n])[1] <= y+30 <= can.coords(obstacles2[n])[3] and can.coords(obstacles2[n])[0] <= x+30 <= can.coords(obstacles2[n])[2] :
                 death = 1
+                
     if gravity == 3 :
         for n in range(len(obstacles3)):
             if can.coords(obstacles3[n])[0] <= x <= can.coords(obstacles3[n])[2] and can.coords(obstacles3[n])[1] <= y+30 <= can.coords(obstacles3[n])[3]:
                 death = 1
+                
     if gravity == 4 :
         for n in range(len(obstacles4)): 
             if can.coords(obstacles4[n])[1] <= y <= can.coords(obstacles4[n])[3] and can.coords(obstacles4[n])[0] <= x <= can.coords(obstacles4[n])[2]:
                 death = 1
+                
     if death > 0 : # On teste si la valeur de la mort est activée
         GameOver()
     if flag > 0 :
         fen.after(10,DeathTrigger) # On raffraichit la fonction récursive
         
 def GameOver():
+    
     Stop() # On arrête le jeu et notamment l'incrémentation du Timer
     fen.destroy() # On détruit la fenêtre de jeu
+    
     GameOverScreen = Tk() # On crée une nouvelle fenêtre de game over
-    GameOverLabel = Label(GameOverScreen,text="Game Over",fg='red') # On affiche le message Game Over
-    GameOverLabel.pack()
+    GameOverScreen.title("Game Over")
+    
+    path = "GameOverLucas.jpg" #On définit l'image de fin à utiliser
+    GameOverImage = ImageTk.PhotoImage(Image.open(path)) # On emplois le moduke TkImage pour enregistrer l'image dans une variable exploitable
+    Panel = Label(GameOverScreen, image = GameOverImage) # On crée un Label utilisant l'image pour l'afficher sur toute la fenêtre
+    Panel.pack( fill = "both", expand = "yes") # On pack l'image sur toute la fenêtre
+    
     bou5 = Button(GameOverScreen,text="Quitter",command=GameOverScreen.destroy) # On permet aux joueurs de quitter le nouvel écran
-    bou5.pack() 
+    bou5.pack()
+    
     GameOverTime = Label(text=(int((temps*100)))/100) # On affiche également le temps au moment de la mort du joueur
-    GameOverTime.pack()   
+    GameOverTime.pack()
+    
+    GameOverScreen.mainloop()
+    
     
 def Exit(event=None): #Fonction appelée pour éteindre le jeu
     fen.destroy()
@@ -179,7 +223,7 @@ height,width = randrange(300,501),randrange(300,501) # On crée un plan aux dime
 print("height = ",height,"width = ",width)
 
 fen=Tk() #On crée la fenêtre Tkinter
-fen.title("Animation d'une balle")
+fen.title("Reproduction INFINIROOM")
 can=Canvas(fen,bg="grey",height=height,width=width) # On crée un canvas aux dimensions définies plus haut
 can.pack()
 actor=can.create_oval(x,y,x+30,y+30,width=2,fill='red') # On crée l'acteur, une boule de 30 pixels de diamètre
